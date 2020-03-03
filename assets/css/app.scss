@@ -1,0 +1,14 @@
+@import "~bootstrap/scss/bootstrap";
+
+body {
+    background-color: lightgray;
+}
+
+.box-shadow {
+     box-shadow: 0.25em .75em rgba(0, 0, 0, .05); 
+}
+.container {
+    margin: 100px auto 100px auto;
+    width: 590px;
+}
+
