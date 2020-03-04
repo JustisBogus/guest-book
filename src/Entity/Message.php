@@ -30,6 +30,12 @@ class Message
      */
     private $time;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,5 +66,16 @@ class Message
         return $this;
     }
 
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 
+    public function setUser($user): void
+    {
+        $this->user = $user;
+    }
 }
