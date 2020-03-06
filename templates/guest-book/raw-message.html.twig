@@ -1,11 +1,11 @@
 <div class="card">
   <div class="card-header">
-    {{message.time|date("Y-m-d H:i:s")}}
+    {{message.time|ago}}
   </div>
   <div class="card-body">
     <blockquote class="blockquote mb-0 message-text">
       <p>{{message.text}}</p>
-      <footer class="blockquote-footer">{{ message.user.username }} has posted {{ message.user.messages|length }} messages, last seen {{ message.user.lastVisit|date('Y-m-d H:i:s') }}</footer>
+      <footer class="blockquote-footer">{{ message.user.username }} has posted {{ message.user.messages|length }} messages, last seen {{ message.user.lastVisit|ago }}</footer>
     </blockquote>
   </div>
 </div>

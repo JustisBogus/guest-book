@@ -114,6 +114,9 @@
     "knplabs/knp-paginator-bundle": {
         "version": "v5.1.1"
     },
+    "knplabs/knp-time-bundle": {
+        "version": "v1.11.0"
+    },
     "monolog/monolog": {
         "version": "2.0.2"
     },
@@ -449,6 +452,9 @@
         "version": "v5.0.5"
     },
     "symfony/string": {
+        "version": "v5.0.5"
+    },
+    "symfony/templating": {
         "version": "v5.0.5"
     },
     "symfony/test-pack": {
