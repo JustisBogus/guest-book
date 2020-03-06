@@ -38,7 +38,8 @@ class RegisterController extends AbstractController
                 $user->getPlainPassword()
             );
             $user->setPassword($password);
-            $user->setLastVisit(new \DateTime('2020-03-04'));
+            $user->setLastVisit(new \DateTime('@'.strtotime('now')));
+            $user->setRoles([User::ROLE_USER]);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();

@@ -3,8 +3,17 @@
     {{message.time|ago}}
   </div>
   <div class="card-body">
+    <div class="d-block text-right mt-3">
+            
+        </div>
     <blockquote class="blockquote mb-0 message-text">
-      <p>{{message.text}}</p>
+      <p>{{message.text}} 
+            {% if is_granted('edit', message) %}
+                <a class="message-edit" href="{{ path('message_edit', {'id': message.id}) }}">Edit</a>
+            {% endif %}
+            {% if is_granted('delete', message) %}
+                <a class="message-delete text-danger" href="{{ path('message_delete', {'id': message.id}) }}">Delete</a>
+            {% endif %}</p>
       <footer class="blockquote-footer">{{ message.user.username }} has posted {{ message.user.messages|length }} messages, last seen {{ message.user.lastVisit|ago }}</footer>
     </blockquote>
   </div>

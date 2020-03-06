@@ -8,14 +8,6 @@
     {% endfor %}
     <h6 class="border-bottom border-gray pb-2 mb-0">Public</h6>
     {% for message in messages %}
-        <div class="d-block text-right mt-3">
-            {% if is_granted('edit', message) %}
-                <a class="message-edit" href="{{ path('message_edit', {'id': message.id}) }}">Edit</a>
-            {% endif %}
-            {% if is_granted('delete', message) %}
-                <a class="message-delete text-danger" href="{{ path('message_delete', {'id': message.id}) }}">Delete</a>
-            {% endif %}
-        </div>
         <a href="{{ path('message', {'id': message.id}) }}">
             {{ include('guest-book/raw-message.html.twig', {'message': message}) }}
         </a>
