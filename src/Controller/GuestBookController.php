@@ -6,17 +6,16 @@ use App\Entity\Message;
 use App\Form\MessageType;
 use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * @Route("/")
@@ -63,19 +62,33 @@ class GuestBookController extends AbstractController
     /**
      * @Route("/", name="messages_index")
      */
-    public function index() 
+    public function index(Request $request ,PaginatorInterface $paginator) 
     {
+        $messages = $this->messageRepository->findBy([], ['time' => 'DESC']);
+        $pagination = $paginator->paginate(
+            $messages,
+            $request->query->getInt('page', 1),
+            10 
+        );
+
         return $this->render('guest-book/index.html.twig', [
-            'messages' => $this->messageRepository->findBy([], ['time' => 'DESC'])
+            'messages' => $pagination
         ]);
     }
 
     /**
      * @Route("/admin", name="guest_book_admin")
      */
-    public function admin() {
+    public function admin(Request $request ,PaginatorInterface $paginator) {
+        $messages = $this->messageRepository->findBy([], ['time' => 'DESC']);
+        $pagination = $paginator->paginate(
+            $messages,
+            $request->query->getInt('page', 1),
+            10 
+        );
+
         return $this->render('guest-book/admin.html.twig', [
-            'messages' => $this->messageRepository->findBy([], ['time' => 'DESC'])
+            'messages' => $pagination
         ]);
     }
 
@@ -118,20 +131,25 @@ class GuestBookController extends AbstractController
     public function add(Request $request, TokenStorageInterface $tokenStorage)
     {
         $user = $tokenStorage->getToken()->getUser();
+        $username = $user->getUsername();
         $message = new Message();
         $message->setUser($user);
         $message->setTime(new \DateTime());
         $form = $this->formFactory->create(MessageType::class, $message);
         $form->handleRequest($request);
+        $honeyPot = $message->getHoneyPot();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($message);
-            $this->entityManager->flush();
-
+            if (empty($honeyPot)) {
+                $this->entityManager->persist($message);
+                $this->entityManager->flush();
+            } else {
+                $this->flashBag->add('notice', 'Spam');
+            }
             return new RedirectResponse($this->router->generate('messages_index'));
         }
         
-        return $this->render('guest-book/add.html.twig', ['form' => $form->createView()]);
+        return $this->render('guest-book/add.html.twig', ['form' => $form->createView(), 'username' => $username]);
     }
 
     /**

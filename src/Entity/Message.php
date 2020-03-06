@@ -36,6 +36,11 @@ class Message
      */
     private $user;
 
+    /**
+     * 
+     */
+    private $honeypot;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +67,19 @@ class Message
     public function setTime(DateTime $time): self
     {
         $this->time = $time;
+
+        return $this;
+    }
+
+    public function getHoneyPot()
+    {
+        return $this->honeypot;
+    }
+
+  
+    public function setHoneyPot(string $honeypot): self
+    {
+        $this->honeypot = $honeypot;
 
         return $this;
     }

@@ -6,13 +6,7 @@
             {{ message }}
         </div>
     {% endfor %}
-    <small class="d-block text-right mt-3">
-        <a href="{{ path('security_logout') }}">Logout</a>
-    </small>
-    <small class="d-block text-right mt-3">
-        <a href="{{ path('message_add') }}">Add new</a>
-    </small>
-    <h6 class="border-bottom border-gray pb-2 mb-0">Recent messages</h6>
+    <h6 class="border-bottom border-gray pb-2 mb-0">Admin</h6>
     {% for message in messages %}
         <a href="{{ path('message', {'id': message.id}) }}">
             {{ include('guest-book/raw-message.html.twig', {'message': message}) }}
@@ -22,4 +16,7 @@
             <a href="{{ path('message_delete', {'id': message.id}) }}">Delete</a>
          </small>
     {% endfor %}
+    <div class="navigation">
+        {{ knp_pagination_render(messages) }}
+    </div>
 {% endblock %}

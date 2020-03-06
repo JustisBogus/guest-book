@@ -72,6 +72,11 @@ class User implements UserInterface, \Serializable
         $this->messages = new ArrayCollection();
     }
 
+    /**
+     * 
+     */
+    private $messageCount;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -117,6 +122,18 @@ class User implements UserInterface, \Serializable
     public function setPlainPassword($plainPassword): void
     {
         $this->plainPassword = $plainPassword;
+    }
+
+    public function getMessageCount()
+    {
+        return $this->messageCount;
+    }
+
+    public function setMessageCount($messageCount)
+    {
+        $this->messageCount = $messageCount;
+
+        return $this->messageCount;
     }
 
     public function getLoginTime()
