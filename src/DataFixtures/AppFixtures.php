@@ -83,11 +83,11 @@ class AppFixtures extends Fixture
         $user->setUsername($userData['username']);
         $user->setEmail($userData['email']);
         $user->setPassword($this->passwordEncoder->encodePassword($user, $userData['password']));
-        $user->setLoginTime(new \DateTime('2020-03-03'));
+        $user->setLastVisit(new \DateTime('2020-03-03'));
         $this->addReference($userData['username'], $user);
         $user->setRoles($userData['roles']);
         $manager->persist($user);
         }
         $manager->flush();
-    } 
+    }
 }

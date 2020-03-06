@@ -13,11 +13,9 @@
                 href="{{ path('messages_index') }}">Guest Book</a>
             <div class="w-100 order-1 order-md-0">
                 <ul class="navbar-nav px-3">
-                    {% if is_granted('ROLE_USER') %}
                         <li class="nav-item text-nowrap">
-                            <a class="nav-link" href="{{ path('message_add') }}">Add new</a>
+                            <a class="nav-link add-new" href="{{ path('message_add') }}">Add new</a>
                         </li>
-                    {% endif %}
                 </ul>
             </div>
             <div class="order-2 order-md-1">
@@ -26,10 +24,6 @@
                         <li class="nav-item text-nowrap">
                             <a class="nav-link"
                             href="#">{{ app.user.username }}</a>
-                        </li>
-                        <li class="nav-item text-nowrap">
-                            <a class="nav-link"
-                            href="{{ path('security_logout') }}">Sign out</a>
                         </li>
                     {% else %}
                         <li class="nav-item text-nowrap">

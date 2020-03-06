@@ -62,8 +62,18 @@ class GuestBookController extends AbstractController
     /**
      * @Route("/", name="messages_index")
      */
-    public function index(Request $request ,PaginatorInterface $paginator) 
+    public function index(Request $request ,PaginatorInterface $paginator, TokenStorageInterface $tokenStorage) 
     {
+        $securityContext = $this->container->get('security.authorization_checker');
+            if ($securityContext->isGranted('ROLE_USER')) {
+                $user = $tokenStorage->getToken()->getUser();
+
+                $user->setLastVisit(new \DateTime());
+
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
+            }
+
         $messages = $this->messageRepository->findBy([], ['time' => 'DESC']);
         $pagination = $paginator->paginate(
             $messages,
@@ -79,7 +89,18 @@ class GuestBookController extends AbstractController
     /**
      * @Route("/admin", name="guest_book_admin")
      */
-    public function admin(Request $request ,PaginatorInterface $paginator) {
+    public function admin(Request $request ,PaginatorInterface $paginator, TokenStorageInterface $tokenStorage) {
+
+        $securityContext = $this->container->get('security.authorization_checker');
+            if ($securityContext->isGranted('ROLE_ADMIN')) {
+                $user = $tokenStorage->getToken()->getUser();
+
+                $user->setLastVisit(new \DateTime());
+
+                $this->entityManager->persist($user);
+                $this->entityManager->flush();
+            }
+
         $messages = $this->messageRepository->findBy([], ['time' => 'DESC']);
         $pagination = $paginator->paginate(
             $messages,
@@ -96,8 +117,10 @@ class GuestBookController extends AbstractController
      * @Route("/edit/{id}", name="message_edit")
      * @Security("is_granted('edit', message)", message="Access denied")
      */
-    public function edit(Message $message, Request $request)
+    public function edit(Message $message, Request $request, TokenStorageInterface $tokenStorage)
     {
+        $user = $tokenStorage->getToken()->getUser();
+        $username = $user->getUsername();
         $form = $this->formFactory->create(MessageType::class, $message);
         $form->handleRequest($request);
 
@@ -107,7 +130,7 @@ class GuestBookController extends AbstractController
             return new RedirectResponse($this->router->generate('messages_index'));
         }
         
-        return $this->render('guest-book/add.html.twig', ['form' => $form->createView()]);
+        return $this->render('guest-book/add.html.twig', ['form' => $form->createView(), 'username' => $username]);
     }
 
     /**

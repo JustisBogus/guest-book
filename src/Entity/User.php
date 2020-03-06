@@ -54,7 +54,7 @@ class User implements UserInterface, \Serializable
     /**
      * @ORM\Column(type="datetime")
      */
-    private $logintime;
+    private $lastVisit;
 
     /**
      * @var array
@@ -136,15 +136,15 @@ class User implements UserInterface, \Serializable
         return $this->messageCount;
     }
 
-    public function getLoginTime()
+    public function getLastVisit()
     {
-        return $this->logintime;
+        return $this->lastVisit;
     }
 
   
-    public function setLoginTime(DateTime $logintime): self
+    public function setLastVisit(DateTime $lastVisit): self
     {
-        $this->logintime = $logintime;
+        $this->lastVisit = $lastVisit;
 
         return $this;
     }

@@ -1,14 +1,18 @@
 {% extends 'base.html.twig'%}
 
 {% block body %}
-    <div class="blockquote-footer"/>
-        {{ username }}
-    <div>
-    {{ form_start(form) }}
+    <div class="card">
+        <div class="card-header">
+            <div class="blockquote-footer"/>
+                {{ username }}
+            </div>
+            {{ form_start(form) }}
 
-    {{ form_widget(form.text) }}
+            {{ form_widget(form.text) }}
 
-    {{ form_widget(form.honeypot, {attr: {class: 'form-control', style: 'display:none !important', tabindex: '-1', autocomplete: 'off', ref: 'init'}}) }}
+            {{ form_widget(form.honeypot, {attr: {class: 'form-control', style: 'display:none !important', tabindex: '-1', autocomplete: 'off', ref: 'init'}}) }}
 
-    {{ form_end(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>        
 {% endblock %}

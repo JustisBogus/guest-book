@@ -21,7 +21,7 @@ security:
             # switch_user: true
 
             http_basic: ~
-        
+
             logout:
                 path: security_logout
                 target: messages_index
